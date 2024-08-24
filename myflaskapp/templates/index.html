@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прогноз погоды, Новости и Цитаты</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Прогноз погоды, Новости и Цитаты</h1>
+
+        <!-- Форма для ввода города -->
+        <form method="POST" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="city" class="form-control" placeholder="Введите название города" value="{{ city }}">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Узнать погоду</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <h2>Погода в {{ city }}</h2>
+                {% if weather %}
+                    <p>Температура: {{ weather['main']['temp'] }}°C</p>
+                    <p>Описание: {{ weather['weather'][0]['description'] }}</p>
+                {% else %}
+                    <p>Данные о погоде недоступны.</p>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                <h2>Последние Новости</h2>
+                {% if news %}
+                    <ul>
+                        {% for article in news %}
+                        <li><a href="{{ article['url'] }}" target="_blank">{{ article['title'] }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Новости недоступны.</p>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                <h2>Цитата дня</h2>
+                <p>"{{ quote['content'] }}" - {{ quote['author'] }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
